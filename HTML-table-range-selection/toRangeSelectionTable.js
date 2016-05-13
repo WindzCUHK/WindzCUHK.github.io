@@ -61,6 +61,13 @@ var toRangeSelectionTable = function (tableNode) {
 			// select current cell
 			startCell = e.target;
 			startCell.classList.add("selected");
+
+			// let table get selected for the copy event
+			var range = document.createRange();
+			range.selectNode(startCell);
+			var selection = window.getSelection();
+			selection.removeAllRanges();
+			selection.addRange(range);
 		});
 		td.addEventListener("mouseup", function(e) {
 			startCell = null;
@@ -89,16 +96,16 @@ var toRangeSelectionTable = function (tableNode) {
 		while ((table.tagName !== "TABLE" && table.tagName !== "TBODY") && table.parentElement != null) table = table.parentElement;
 		if (!table) return;
 
-		var trs = table.querySelectorAll(":scope tr.area-selected");
+		var trs = table.querySelectorAll("tr.area-selected");
 		if (trs.length === 0) {
-			console.log("no area selection");
-			var currentSelection = table.querySelector(":scope td.selected");
-			console.log(table, table.querySelector(":scope td.selected"));
+			// console.log("no area selection");
+			var currentSelection = table.querySelector("td.selected");
+			// console.log(table, table.querySelector("td.selected"));
 			if (currentSelection) e.clipboardData.setData('text/plain', currentSelection.textContent);
 		} else {
 			var copyStrings = [];
 			[].forEach.call(trs, function (tr) {
-				var tds = tr.querySelectorAll(":scope .area-selected");
+				var tds = tr.querySelectorAll(".area-selected");
 				copyStrings.push([].map.call(tds, td => td.textContent ).join("\t"));
 			});
 			e.clipboardData.setData('text/plain', copyStrings.join("\n"));
