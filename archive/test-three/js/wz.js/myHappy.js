@@ -39,7 +39,7 @@ window.addEventListener("load", function () {
 	ctx.globalAlpha = 2/3;
 
 	// some color, lets use a black pencil
-	ctx.strokeStyle = ctx.fillStyle = "#F00";
+	ctx.strokeStyle = ctx.fillStyle = "#FE5A27";
 
 	(function loop() {
 		// clear canvas for each frame
