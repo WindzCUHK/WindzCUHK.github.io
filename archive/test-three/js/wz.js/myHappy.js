@@ -41,6 +41,8 @@ window.addEventListener("load", function () {
 	// some color, lets use a black pencil
 	ctx.strokeStyle = ctx.fillStyle = "#FE5A27";
 
+	var shouldEndLoop = false;
+
 	(function loop() {
 		// clear canvas for each frame
 		ctx.clearRect(xPosition, 0, 60, 150);
@@ -76,6 +78,22 @@ window.addEventListener("load", function () {
 
 			// if we still have chars left, loop animation again for this char
 			if (i < txt.length) requestAnimationFrame(loop);
+			else {
+				if (!shouldEndLoop) {
+					setTimeout(function () {
+						ctx.clearRect(0, 0, W, H);
+						txt = "Hope u can enjoy this scene";
+						i = 0;
+						xPosition = W/2 - (txt.split('').reduce(function(p, c) {
+							return p + ctx.measureText(c).width;
+						}, 120) / 2)
+						requestAnimationFrame(loop);
+						shouldEndLoop = true;
+					}, 2000);
+				} else {
+					setTimeout(function () {ctx.clearRect(0, 0, W, H);}, 2000);
+				}
+			}
 		}
 	})();  // just to self-invoke the loop
 });
